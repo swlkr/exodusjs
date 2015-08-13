@@ -29,12 +29,12 @@ $ [EXODUS] Finished
 ```js
 // 20150811090001-add-events-table
 var migration = {
-  up: {
-    return `your sql goes here`;
-  },
-  down: {
-    return `your sql goes here`;
-  }
+  up: `
+    your sql goes here
+  `,
+  down: `
+    your sql goes here
+  `
 };
 
 module.exports = migration;
