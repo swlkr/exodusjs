@@ -1,0 +1,36 @@
+{
+  "name": "exodusjs",
+  "version": "0.0.1",
+  "description": "Simple io.js postgres database migrations",
+  "bin": {
+    "exodus": "app.js"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:swlkr/exodus.git"
+  },
+  "keywords": [
+    "exodus",
+    "migration",
+    "database",
+    "postgres",
+    "nodejs"
+  ],
+  "author": "Sean Walker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/swlkr/exodus/issues"
+  },
+  "homepage": "https://github.com/swlkr/exodus#readme",
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
+  "dependencies": {
+    "acidjs": "^1.0.2",
+    "commander": "^2.8.1",
+    "dotenv": "^1.2.0"
+  }
+}
