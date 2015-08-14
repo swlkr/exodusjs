@@ -46,6 +46,13 @@ function sanityCheck() {
   }
 }
 
+function requireFromString(src, filename) {
+  var Module = module.constructor;
+  var m = new Module();
+  m._compile(src, filename);
+  return m.exports;
+}
+
 // exodus create <migration name>
 commands.create = (name) => {
   // Create migrations folder in current directory
@@ -134,8 +141,7 @@ commands.up = () => {
     var migrations = names
                      .map((n) => {
                        clog(`Running migration ${n.split('.')[0]}`);
-
-                       return require(`./migrations/${n}`);
+                       return requireFromString(fs.readFileSync(`migrations/${n}`, 'utf8'));
                      })
                      .map((m) => m.up)
                      .map((sql) => acid.sql(sql));
@@ -190,7 +196,7 @@ commands.down = () => {
 
     var id = rows[0].id;
     var name = rows[0].name;
-    var migration = require(`./migrations/${name}`);
+    var migration = requireFromString(fs.readFileSync(`migrations/${name}`, 'utf8'));
 
     clog('Rolling back 1 migration');
     clog(`Rolling back migration ${name.split('.')[0]}`);
