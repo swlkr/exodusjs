@@ -2,7 +2,7 @@ var config = require('./config'),
     fs     = require('fs'),
     acid   = require('acidjs')(config.database.url);
 
-var clog = (message) => {
+var clog = function(message) {
   console.log('[EXODUS]', message);
 };
 
@@ -54,9 +54,9 @@ function requireFromString(src, filename) {
 }
 
 // exodus create <migration name>
-commands.create = (name) => {
+commands.create = function(name) {
   // Create migrations folder in current directory
-  fs.mkdir('migrations', (err) => {
+  fs.mkdir('migrations', function(err) {
     if(err && err.code !== 'EEXIST') {
       clog(err);
     }
@@ -87,7 +87,7 @@ commands.create = (name) => {
       contents: contents
     };
 
-    fs.writeFile(`migrations/${migration.name}`, migration.contents, (writeFileError) => {
+    fs.writeFile(`migrations/${migration.name}`, migration.contents, function(writeFileError) {
       if(writeFileError) {
         clog(writeFileError);
         return;
@@ -99,32 +99,32 @@ commands.create = (name) => {
 };
 
 // exodus up
-commands.up = () => {
+commands.up = function() {
   sanityCheck();
 
   // Check for table existence
   acid
   .sql('select * from information_schema.tables where table_name = $1', ['migrations'])
-  .then((rows) => {
+  .then(function(rows) {
     // table doesn't exist, create it!
     if(rows.length === 0) {
       return acid.sql('create table migrations (id serial primary key, name text, ran_at timestamp without time zone default now());');
     } else {
-      return new Promise((resolve) => {
+      return new Promise(function(resolve) {
         resolve([]);
       });
     }
   })
-  .then(() => acid.sql('select * from migrations order by ran_at desc'))
-  .then((rows) => {
+  .then(function() { return acid.sql('select * from migrations order by ran_at desc'); })
+  .then(function(rows) {
     // Get the migrations in the migrations folder
     var files = fs.readdirSync('migrations');
 
     // Get the migrations that have already run
-    var ranMigrations = rows.map((f) => `${f.name}`);
+    var ranMigrations = rows.map(function(f) { return `${f.name}`; });
 
     // Exclude migrations that have already run
-    var names = files.filter((f) => ranMigrations.indexOf(f) === -1 );
+    var names = files.filter(function(f) { return ranMigrations.indexOf(f) === -1; });
 
     // Bail if there aren't any
     if(names.length === 0) {
@@ -139,43 +139,43 @@ commands.up = () => {
     // get the sql
     // transform into promises that will run the sql
     var migrations = names
-                     .map((n) => {
+                     .map(function(n) {
                        clog(`Running migration ${n.split('.')[0]}`);
                        return requireFromString(fs.readFileSync(`migrations/${n}`, 'utf8'));
                      })
-                     .map((m) => m.up)
-                     .map((sql) => acid.sql(sql));
+                     .map(function(m) { return m.up; })
+                     .map(function(sql) { return acid.sql(sql); });
 
     Promise
     .all(migrations)
-    .then(() => {
+    .then(function() {
       // Insert all migration filenames into the migrations table
-      return Promise.all(names.map((n) => acid.insert('migrations', { name: n })));
+      return Promise.all(names.map(function(n) { return acid.insert('migrations', { name: n }); }));
     })
-    .then(() => {
+    .then(function() {
       clog('Done');
 
       process.exit(0);
     })
-    .catch((error) => {
+    .catch(function(error) {
       clog(error);
 
       process.exit(0);
     });
   })
-  .catch((error) => {
+  .catch(function(error) {
     clog(error);
 
     process.exit(0);
   });
 };
 
-commands.down = () => {
+commands.down = function() {
   sanityCheck();
 
   acid
   .sql('select * from information_schema.tables where table_name = $1', ['migrations'])
-  .then((rows) => {
+  .then(function(rows) {
     // table doesn't exist, bail
     if(rows.length === 0) {
       clog('No migrations to rollback');
@@ -186,7 +186,7 @@ commands.down = () => {
       return acid.sql('select * from migrations order by ran_at desc');
     }
   })
-  .then((rows) => {
+  .then(function(rows) {
     if(rows.length === 0) {
       clog('No migrations to rollback');
       clog('Done');
@@ -203,17 +203,17 @@ commands.down = () => {
 
     return Promise.all([id, acid.sql(migration.down)]);
   })
-  .then((values) => {
+  .then(function(values) {
     var id = values[0];
 
     return acid.delete('migrations', 'id = $1', id);
   })
-  .then(() => {
+  .then(function() {
     clog('Done');
 
     process.exit(0);
   })
-  .catch((error) => {
+  .catch(function(error) {
     clog(error);
 
     process.exit(0);
