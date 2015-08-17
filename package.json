@@ -1,6 +1,6 @@
 {
   "name": "exodusjs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple io.js postgres database migrations",
   "bin": {
     "exodus": "app.js"
