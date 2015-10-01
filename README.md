@@ -1,5 +1,5 @@
 # exodus.js
-_Simple io.js postgres database migrations_
+_Simple postgres database migrations_
 
 Built on top of [acid](https://github.com/swlkr/acid)
 
