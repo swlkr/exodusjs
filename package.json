@@ -26,11 +26,11 @@
   },
   "homepage": "https://github.com/swlkr/exodus#readme",
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "dotenv": "^1.2.0"
   },
   "dependencies": {
     "acidjs": "^1.0.2",
     "commander": "^2.8.1",
-    "dotenv": "^1.2.0"
   }
 }
