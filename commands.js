@@ -140,18 +140,29 @@ commands.up = function() {
     // transform into promises that will run the sql
     var migrations = names
                      .map(function(n) {
-                       clog(`Running migration ${n.split('.')[0]}`);
-                       return requireFromString(fs.readFileSync(`migrations/${n}`, 'utf8'));
+                       return { file: requireFromString(fs.readFileSync(`migrations/${n}`, 'utf8')), name: n };
                      })
-                     .map(function(m) { return m.up; })
-                     .map(function(sql) { return acid.sql(sql); });
+                     .map(function(m) { return { sql: m.file.up, name: m.name } })
+                     .map(function(migration) { return new Promise(function(resolve, reject) {
+                          clog(`Running migration ${migration.name.split('.')[0]}`)
+
+                          acid
+                          .sql(migration.sql)
+                          .then(function(response) {
+                            return acid.insert('migrations', { name: migration.name });
+                          })
+                          .then(function(response) {
+                            resolve(true);
+                          })
+                          .catch(function(error) {
+                            reject(error);
+                          });
+
+                        });
+                      });
 
     Promise
-    .all(migrations)
-    .then(function() {
-      // Insert all migration filenames into the migrations table
-      return Promise.all(names.map(function(n) { return acid.insert('migrations', { name: n }); }));
-    })
+    .race(migrations)
     .then(function() {
       clog('Done');
 
