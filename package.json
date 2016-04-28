@@ -1,19 +1,17 @@
 {
   "name": "exodusjs",
-  "version": "0.0.3",
+  "version": "2.0.0",
   "description": "Simple postgres database migrations",
   "bin": {
-    "exodus": "app.js"
-  },
-  "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "exodus": "exodus.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:swlkr/exodus.git"
+    "url": "git@github.com:swlkr/exodusjs.git"
   },
   "keywords": [
     "exodus",
+    "exodusjs",
     "migration",
     "database",
     "postgres",
@@ -22,15 +20,14 @@
   "author": "Sean Walker",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/swlkr/exodus/issues"
+    "url": "https://github.com/swlkr/exodusjs/issues"
   },
-  "homepage": "https://github.com/swlkr/exodus#readme",
   "devDependencies": {
-    "mocha": "^2.2.5",
-    "dotenv": "^1.2.0"
+    "dotenv": "^2.0.0"
   },
   "dependencies": {
-    "acidjs": "^1.0.2",
+    "co": "^4.6.0",
     "commander": "^2.8.1",
+    "yepql": "file:../yepql"
   }
 }
