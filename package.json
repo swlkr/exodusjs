@@ -1,6 +1,6 @@
 {
   "name": "exodusjs",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Simple postgres database migrations",
   "bin": {
     "exodus": "exodus.js"
@@ -26,6 +26,7 @@
     "co": "^4.6.0",
     "commander": "^2.8.1",
     "dotenv": "^2.0.0",
+    "pg": "^4.5.5",
     "yepql": "2.0.1"
   }
 }
