@@ -28,6 +28,6 @@
   "dependencies": {
     "co": "^4.6.0",
     "commander": "^2.8.1",
-    "yepql": "file:../yepql"
+    "yepql": "2.0.1"
   }
 }
