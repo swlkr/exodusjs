@@ -22,12 +22,10 @@
   "bugs": {
     "url": "https://github.com/swlkr/exodusjs/issues"
   },
-  "devDependencies": {
-    "dotenv": "^2.0.0"
-  },
   "dependencies": {
     "co": "^4.6.0",
     "commander": "^2.8.1",
+    "dotenv": "^2.0.0",
     "yepql": "2.0.1"
   }
 }
