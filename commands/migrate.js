@@ -65,7 +65,12 @@ module.exports = function *() {
   }
 
   // Check for the migrations table
-  var tables = yield database.getTablesByName(env.databaseUrl, [EXODUS_MIGRATIONS]);
+  var tables = null;
+  try {
+    tables = yield database.getTablesByName(env.databaseUrl, [EXODUS_MIGRATIONS]);
+  } catch(e) {
+    console.log(e);
+  }
 
   if(tables.length === 0) {
     // Create the migrations table
