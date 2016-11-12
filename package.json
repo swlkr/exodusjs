@@ -1,6 +1,6 @@
 {
   "name": "exodusjs",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Simple postgres database migrations",
   "bin": {
     "exodus": "exodus.js"
@@ -22,11 +22,12 @@
   "bugs": {
     "url": "https://github.com/swlkr/exodusjs/issues"
   },
+  "peerDepedencies": {
+    "yepql": "2.2.1",
+    "pg": "6.1.0"
+  },
   "dependencies": {
     "co": "^4.6.0",
     "commander": "^2.8.1",
-    "dotenv": "^2.0.0",
-    "pg": "^4.5.5",
-    "yepql": "2.0.2"
   }
 }
